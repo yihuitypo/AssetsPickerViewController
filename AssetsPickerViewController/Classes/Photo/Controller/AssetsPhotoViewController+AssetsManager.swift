@@ -53,7 +53,7 @@ extension AssetsPhotoViewController: AssetsManagerDelegate {
         if albums.contains(selectedAlbum) {
             manager.selectDefaultAlbum()
             updateNavigationStatus()
-            updateFooter()
+//            updateFooter()
             collectionView.reloadData()
         }
     }
@@ -64,7 +64,7 @@ extension AssetsPhotoViewController: AssetsManagerDelegate {
     public func assetsManager(manager: AssetsManager, insertedAssets assets: [PHAsset], at indexPaths: [IndexPath]) {
         logi("insertedAssets at: \(indexPaths)")
         collectionView.insertItems(at: indexPaths)
-        updateFooter()
+//        updateFooter()
     }
     
     public func assetsManager(manager: AssetsManager, removedAssets assets: [PHAsset], at indexPaths: [IndexPath]) {
@@ -76,9 +76,9 @@ extension AssetsPhotoViewController: AssetsManagerDelegate {
             }
         }
         collectionView.deleteItems(at: indexPaths)
-        updateSelectionCount()
-        updateNavigationStatus()
-        updateFooter()
+//        updateSelectionCount()
+//        updateNavigationStatus()
+//        updateFooter()
     }
     
     public func assetsManager(manager: AssetsManager, updatedAssets assets: [PHAsset], at indexPaths: [IndexPath]) {
@@ -92,8 +92,8 @@ extension AssetsPhotoViewController: AssetsManagerDelegate {
             } else {
                 self?.collectionView.reloadItems(at: indexPathsToReload)
             }
-            self?.updateNavigationStatus()
-            self?.updateFooter()
+//            self?.updateNavigationStatus()
+//            self?.updateFooter()
             self?.collectionView.isUserInteractionEnabled = true
         }
     }

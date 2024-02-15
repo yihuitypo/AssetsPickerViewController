@@ -102,16 +102,16 @@ extension AssetsPhotoViewController: UICollectionViewDataSource {
         fetchService.cancelFetching(at: indexPath)
     }
     
-    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerReuseIdentifier, for: indexPath) as? AssetsPhotoFooterView else {
-            logw("Failed to cast AssetsPhotoFooterView.")
-            return AssetsPhotoFooterView()
-        }
-        footerView.setNeedsUpdateConstraints()
-        footerView.updateConstraintsIfNeeded()
-        footerView.set(imageCount: AssetsManager.shared.count(ofType: .image), videoCount: AssetsManager.shared.count(ofType: .video))
-        return footerView
-    }
+//    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerReuseIdentifier, for: indexPath) as? AssetsPhotoFooterView else {
+//            logw("Failed to cast AssetsPhotoFooterView.")
+//            return AssetsPhotoFooterView()
+//        }
+//        footerView.setNeedsUpdateConstraints()
+//        footerView.updateConstraintsIfNeeded()
+//        footerView.set(imageCount: AssetsManager.shared.count(ofType: .image), videoCount: AssetsManager.shared.count(ofType: .video))
+//        return footerView
+//    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
