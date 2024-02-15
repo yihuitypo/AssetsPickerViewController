@@ -73,7 +73,6 @@ open class AssetsPhotoViewController: UIViewController {
     var trailingConstraint: LayoutConstraint?
     
     lazy var collectionView: UICollectionView = {
-        
         let layout = AssetsPhotoLayout(pickerConfig: self.pickerConfig)
         self.updateLayout(layout: layout, isPortrait: UIApplication.shared.statusBarOrientation.isPortrait)
         layout.scrollDirection = .vertical
@@ -83,9 +82,9 @@ open class AssetsPhotoViewController: UIViewController {
         view.allowsSelection = true
         view.alwaysBounceVertical = true
         view.register(self.pickerConfig.assetCellType, forCellWithReuseIdentifier: self.cellReuseIdentifier)
-        view.register(AssetsPhotoFooterView.classForCoder(), forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: self.footerReuseIdentifier)
-        view.contentInset = UIEdgeInsets(top: 1, left: 0, bottom: 0, right: 0)
-        view.backgroundColor = .clear
+//        view.register(AssetsPhotoFooterView.classForCoder(), forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: self.footerReuseIdentifier)
+        view.contentInset = UIEdgeInsets(top: 24, left: 12, bottom: 0, right: 12)
+        view.backgroundColor = UIColor.white
         view.dataSource = self
         view.delegate = self
         view.remembersLastFocusedIndexPath = true
@@ -97,6 +96,14 @@ open class AssetsPhotoViewController: UIViewController {
         
         return view
     }()
+    
+    open func adjustTopInset(minimize: Bool) {
+        collectionView.contentInset = UIEdgeInsets(top: minimize ? 1 : 24, left: 12, bottom: 0, right: 12)
+    }
+    
+    open func resetSelectedArray() {
+        selectedArray = []
+    }
     
     lazy var loadingActivityIndicatorView: UIActivityIndicatorView = {
         
@@ -127,7 +134,7 @@ open class AssetsPhotoViewController: UIViewController {
     override open func loadView() {
         super.loadView()
         view = UIView()
-		view.backgroundColor = .ap_background
+        view.backgroundColor = .ap_background
         view.addSubview(collectionView)
         view.addSubview(emptyView)
         view.addSubview(noPermissionView)
@@ -156,7 +163,6 @@ open class AssetsPhotoViewController: UIViewController {
             guard let `self` = self else { return }
             self.updateNoPermissionView()
             if isGranted {
-                AssetsManager.shared.registerObserver()
                 self.setupAssets()
             } else {
                 self.delegate?.assetsPickerCannotAccessPhotoLibrary?(controller: self.picker)
@@ -205,8 +211,27 @@ open class AssetsPhotoViewController: UIViewController {
             delegate?.assetsPicker?(controller: picker, didDeselect: selectedAsset, at: indexPath)
             indexPaths.append(indexPath)
         }
-        updateSelectionCount()
-        updateNavigationStatus()
+//        updateSelectionCount()
+        collectionView.reloadItems(at: indexPaths)
+    }
+    
+    open func deselectItem(mediaLocalId: String) {
+        var indexPaths = [IndexPath]()
+        var processedLocalIds = Set<String>() // Maintain a set of processed local identifiers
+        guard let fetchResult = AssetsManager.shared.fetchResult else { return }
+        for selectedAsset in selectedArray {
+            if selectedAsset.localIdentifier == mediaLocalId, !processedLocalIds.contains(mediaLocalId) {
+                let row = fetchResult.index(of: selectedAsset)
+                let indexPath = IndexPath(row: row, section: 0)
+                if !indexPaths.contains(indexPath) { // Check if the indexPath is not already in the array
+                    deselectCell(at: indexPath)
+                    delegate?.assetsPicker?(controller: picker, didDeselect: selectedAsset, at: indexPath)
+                    indexPaths.append(indexPath)
+                    processedLocalIds.insert(mediaLocalId) // Add the processed local identifier to the set
+                }
+            }
+        }
+//        updateSelectionCount()
         collectionView.reloadItems(at: indexPaths)
     }
     

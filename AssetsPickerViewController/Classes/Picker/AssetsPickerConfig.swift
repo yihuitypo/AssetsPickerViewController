@@ -9,8 +9,7 @@
 import UIKit
 import Photos
 
-@objcMembers
-open class AssetsPickerConfig : NSObject {
+open class AssetsPickerConfig {
 
     // MARK: - Localized Strings Config
 
@@ -94,7 +93,6 @@ open class AssetsPickerConfig : NSObject {
     open var assetIsForcedSelectAssetFromCamera: Bool = true
     
     // MARK: Fetch
-    open var isVideoAllowed: Bool = false
     open var assetFetchOptions: [PHAssetCollectionType: PHFetchOptions]?
     
     // MARK: Custom Layout
@@ -109,26 +107,26 @@ open class AssetsPickerConfig : NSObject {
         }
     }
     open var assetPortraitColumnCount: Int = UI_USER_INTERFACE_IDIOM() == .pad ? 5 : 3
-    open var assetPortraitInteritemSpace: CGFloat = 1
-    open var assetPortraitLineSpace: CGFloat = 1
+    open var assetPortraitInteritemSpace: CGFloat = 3
+    open var assetPortraitLineSpace: CGFloat = 3
     
     func assetPortraitCellSize(forViewSize size: CGSize) -> CGSize {
         let count = CGFloat(self.assetPortraitColumnCount)
-        let edge = (size.width - (count - 1) * self.assetPortraitInteritemSpace) / count
+        let edge = (size.width - ((count - 1) * self.assetPortraitInteritemSpace) - 24) / count
         return CGSize(width: edge, height: edge)
     }
     
     open var assetLandscapeColumnCount: Int = UI_USER_INTERFACE_IDIOM() == .pad ? 7 : 5
-    open var assetLandscapeInteritemSpace: CGFloat = 1.5
-    open var assetLandscapeLineSpace: CGFloat = 1.5
+    open var assetLandscapeInteritemSpace: CGFloat = 3
+    open var assetLandscapeLineSpace: CGFloat = 3
     
     func assetLandscapeCellSize(forViewSize size: CGSize) -> CGSize {
         let count = CGFloat(self.assetLandscapeColumnCount)
-        let edge = (size.width - (count - 1) * self.assetLandscapeInteritemSpace) / count
+        let edge = (size.width - ((count - 1) * self.assetLandscapeInteritemSpace) - 24) / count
         return CGSize(width: edge, height: edge)
     }
     
-    public override init() {}
+    public init() {}
     
     @discardableResult
     open func prepare() -> Self {
@@ -182,11 +180,7 @@ open class AssetsPickerConfig : NSObject {
                 NSSortDescriptor(key: "creationDate", ascending: true),
                 NSSortDescriptor(key: "modificationDate", ascending: true)
             ]
-            options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
-            if isVideoAllowed {
-                options.predicate = NSPredicate(format: "mediaType = %d OR mediaType = %d", PHAssetMediaType.image.rawValue, PHAssetMediaType.video.rawValue)
-            }
-            
+            options.predicate = NSPredicate(format: "mediaType = %d OR mediaType = %d", PHAssetMediaType.image.rawValue, PHAssetMediaType.video.rawValue)
             assetFetchOptions = [
                 .smartAlbum: options,
                 .album: options,

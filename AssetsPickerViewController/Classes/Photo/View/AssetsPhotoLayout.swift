@@ -46,7 +46,7 @@ extension AssetsPhotoLayout {
         let cellSize = isPortrait ? pickerConfig.assetPortraitCellSize(forViewSize: UIScreen.main.portraitContentSize) : pickerConfig.assetLandscapeCellSize(forViewSize: UIScreen.main.landscapeContentSize)
         let lineSpace = isPortrait ? pickerConfig.assetPortraitLineSpace : pickerConfig.assetLandscapeLineSpace
         let contentHeight = CGFloat(rows) * cellSize.height + (CGFloat(max(rows - 1, 0)) * lineSpace)
-        let bottomHeight = cellSize.height * 2/3 + UIScreen.safeAreaInsets(isPortrait: isPortrait).bottom
+        let bottomHeight = UIScreen.safeAreaInsets(isPortrait: isPortrait).bottom
         
         return contentHeight + bottomHeight
     }

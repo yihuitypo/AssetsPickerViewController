@@ -134,7 +134,7 @@ extension AssetsPhotoViewController {
                 if pickerConfig.assetIsForcedSelectAssetFromCamera {
                     select(at: ip)
                     deselectOldestIfNeeded(isForced: true)
-                    updateSelectionCount()
+//                    updateSelectionCount()
                 }
             }
         }

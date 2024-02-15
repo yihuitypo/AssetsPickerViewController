@@ -76,7 +76,7 @@ extension AssetsPhotoViewController {
             self.collectionView.reloadData()
             self.scrollToLastItemIfNeeded()
             self.preselectItemsIfNeeded(result: fetchResult)
-            self.updateNavigationStatus()
+//            self.updateNavigationStatus()
             self.loadingPlaceholderView.isHidden = true
             self.loadingActivityIndicatorView.stopAnimating()
         })
@@ -113,7 +113,7 @@ extension AssetsPhotoViewController {
                                                 animated: false,
                                                 scrollPosition: scrollPosition)
             })
-            updateSelectionCount()
+//            updateSelectionCount()
         }
     }
 
@@ -134,49 +134,53 @@ extension AssetsPhotoViewController {
     }
     
     func updateNavigationStatus() {
-        doneButtonItem.isEnabled = selectedArray.count >= (pickerConfig.assetsMinimumSelectionCount >= 0 ? pickerConfig.assetsMinimumSelectionCount : 1)
-        
-        if let album = AssetsManager.shared.selectedAlbum, selectedArray.isEmpty {
+        doneButtonItem.isEnabled = true
+        if let album = AssetsManager.shared.selectedAlbum {
             title = self.title(forAlbum: album)
         } else {
-            let counts: (imageCount: Int, videoCount: Int) = selectedArray.reduce((0, 0)) { (result, asset) -> (Int, Int) in
-                let imageCount = asset.mediaType == .image ? 1 : 0
-                let videoCount = asset.mediaType == .video ? 1 : 0
-                return (result.0 + imageCount, result.1 + videoCount)
-            }
-            
-            let imageCount = counts.imageCount
-            let videoCount = counts.videoCount
-            
-            var titleString: String = title(forAlbum: AssetsManager.shared.selectedAlbum)
-            
-            if imageCount > 0 && videoCount > 0 {
-                titleString = String(format: String(key: "Title_Selected_Items"), NumberFormatter.decimalString(value: imageCount + videoCount))
-            } else {
-                if imageCount > 0 {
-                    if imageCount > 1 {
-                        titleString = String(format: String(key: "Title_Selected_Photos"), NumberFormatter.decimalString(value: imageCount))
-                    } else {
-                        titleString = String(format: String(key: "Title_Selected_Photo"), NumberFormatter.decimalString(value: imageCount))
-                    }
-                } else if videoCount > 0 {
-                    if videoCount > 1 {
-                        titleString = String(format: String(key: "Title_Selected_Videos"), NumberFormatter.decimalString(value: videoCount))
-                    } else {
-                        titleString = String(format: String(key: "Title_Selected_Video"), NumberFormatter.decimalString(value: videoCount))
-                    }
-                }
-            }
-            title = titleString
+            title = "Albums"
         }
+//        if let album = AssetsManager.shared.selectedAlbum, selectedArray.isEmpty {
+//            title = self.title(forAlbum: album)
+//        } else {
+//            let counts: (imageCount: Int, videoCount: Int) = selectedArray.reduce((0, 0)) { (result, asset) -> (Int, Int) in
+//                let imageCount = asset.mediaType == .image ? 1 : 0
+//                let videoCount = asset.mediaType == .video ? 1 : 0
+//                return (result.0 + imageCount, result.1 + videoCount)
+//            }
+//
+//            let imageCount = counts.imageCount
+//            let videoCount = counts.videoCount
+//
+//            var titleString: String = title(forAlbum: AssetsManager.shared.selectedAlbum)
+//
+//            if imageCount > 0 && videoCount > 0 {
+//                titleString = String(format: String(key: "Title_Selected_Items"), NumberFormatter.decimalString(value: imageCount + videoCount))
+//            } else {
+//                if imageCount > 0 {
+//                    if imageCount > 1 {
+//                        titleString = String(format: String(key: "Title_Selected_Photos"), NumberFormatter.decimalString(value: imageCount))
+//                    } else {
+//                        titleString = String(format: String(key: "Title_Selected_Photo"), NumberFormatter.decimalString(value: imageCount))
+//                    }
+//                } else if videoCount > 0 {
+//                    if videoCount > 1 {
+//                        titleString = String(format: String(key: "Title_Selected_Videos"), NumberFormatter.decimalString(value: videoCount))
+//                    } else {
+//                        titleString = String(format: String(key: "Title_Selected_Video"), NumberFormatter.decimalString(value: videoCount))
+//                    }
+//                }
+//            }
+//            title = titleString
+//        }
     }
     
-    func updateFooter() {
-        guard let footerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).last as? AssetsPhotoFooterView else {
-            return
-        }
-        footerView.set(imageCount: AssetsManager.shared.count(ofType: .image), videoCount: AssetsManager.shared.count(ofType: .video))
-    }
+//    func updateFooter() {
+//        guard let footerView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).last as? AssetsPhotoFooterView else {
+//            return
+//        }
+//        footerView.set(imageCount: AssetsManager.shared.count(ofType: .image), videoCount: AssetsManager.shared.count(ofType: .video))
+//    }
     
     func presentAlbumController(animated: Bool = true) {
         guard PHPhotoLibrary.authorizationStatus() == .authorized else { return }

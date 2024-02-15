@@ -44,7 +44,7 @@ extension AssetsPhotoViewController: UICollectionViewDelegate {
             } else {
                 return false
             }
-        } else {    
+        } else {
             select(at: indexPath)
             return true
         }
@@ -55,8 +55,8 @@ extension AssetsPhotoViewController: UICollectionViewDelegate {
         if !isDragSelectionEnabled {
             deselectOldestIfNeeded()
         }
-        updateSelectionCount()
-        updateNavigationStatus()
+//        updateSelectionCount()
+//        updateNavigationStatus()
         checkInconsistencyForSelection()
     }
     
@@ -73,8 +73,8 @@ extension AssetsPhotoViewController: UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if LogConfig.isSelectLogEnabled { logi("didDeselectItemAt: \(indexPath.row)") }
-        updateSelectionCount()
-        updateNavigationStatus()
+//        updateSelectionCount()
+//        updateNavigationStatus()
         checkInconsistencyForSelection()
     }
 }

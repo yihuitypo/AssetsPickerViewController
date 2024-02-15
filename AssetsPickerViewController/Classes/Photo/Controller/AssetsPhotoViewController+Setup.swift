@@ -16,17 +16,23 @@ extension AssetsPhotoViewController {
     }
     
     func setupBarButtonItems() {
-        navigationItem.leftBarButtonItem = cancelButtonItem
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.layer.opacity = 0
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.clipsToBounds = true
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+//        navigationItem.leftBarButtonItem = cancelButtonItem
         if pickerConfig.assetIsShowCameraButton {
             navigationItem.rightBarButtonItems = [doneButtonItem, takeButtonItem]
         } else {
             navigationItem.rightBarButtonItems = [doneButtonItem]
         }
-        doneButtonItem.isEnabled = false
+        doneButtonItem.isEnabled = true
     }
     
     func setupCollectionView() {
-        
         collectionView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             
